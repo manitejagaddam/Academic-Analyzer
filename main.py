@@ -1,35 +1,31 @@
 import asyncio
+from PIL import Image
+from io import BytesIO
+import requests
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.messages import TextMessage
 from autogen_agentchat.teams import RoundRobinGroupChat
-from dotenv import load_dotenv
-import os
+from autogen_core import Image as AGImage   
+
+# agents
+from agents.answers_analyser import answer_analyser
+from agents.answers_extractor import answer_extractor
 
 
-load_dotenv()
-
-open_router_api = os.getenv("OPEN_ROUTER_API_KEY")
-
-
-# Open Router Assistve Agent
-open_router_model_client = OpenAIChatCompletionClient(
-    base_url="https://openrouter.ai/api/v1",
-    model="deepseek/deepseek-r1-0528:free",
-    api_key=open_router_api,
-    model_info={
-        "family": "deepseek",
-        "vision": True,
-        "function_calling": True,
-        "json_output": False
-    }
+team = RoundRobinGroupChat(
+    participants=[answer_extractor, answer_analyser],
+    max_turns=2
 )
 
+image_path = "https://images.app.goo.gl/C3Ppk"
 
+async def run_team():
+    response = requests.get(image_path) # 23 for the image of folks
+    pil_image = Image.open(BytesIO(response.content))
+    ag_image = AGImage(pil_image)
 
-# Agents :
-# 1. analyse the images
-# 2. fetch the highest part of the exam sheet paper and the lest scored part of the exam sheet 
-# 3. give me the best skills that you had like good in criticalk thinking and give the backing things like lagging in the implementation part
-
-
+    
+    task = TextMessage(content=ag_image, source='user')
+    result = await team.run(task=task)
+    return result.messages
