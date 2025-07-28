@@ -1,5 +1,4 @@
 from autogen_agentchat.agents import AssistantAgent
-# from open_router_agent import open_router_agent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 import os
 from dotenv import load_dotenv
@@ -74,8 +73,8 @@ Output format:
 
 def answer_analyser():
     agent = AssistantAgent(
-        name = "answer Analyser",
-        model_client= open_router_agent,
+        name = "answer_analyser",
+        model_client= open_router_agent(),
         system_message=prompt
     )
     
