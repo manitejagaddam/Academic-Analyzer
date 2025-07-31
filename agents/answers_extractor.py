@@ -69,7 +69,7 @@ def answer_extractor():
     
     agent = AssistantAgent(
         name = "answer_extractor",
-        model_client= open_router_agent(),
+        model_client= open_router_agent,
         system_message=prompt
     )
     

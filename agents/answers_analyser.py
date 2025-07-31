@@ -74,7 +74,7 @@ Output format:
 def answer_analyser():
     agent = AssistantAgent(
         name = "answer_analyser",
-        model_client= open_router_agent(),
+        model_client= open_router_agent,
         system_message=prompt
     )
     

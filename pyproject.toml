@@ -13,6 +13,7 @@ dependencies = [
     "autogenstudio>=0.4.2.2",
     "dotenv>=0.9.9",
     "openai>=1.97.1",
+    "pillow>=11.3.0",
     "streamlit>=1.47.1",
     "tiktoken>=0.9.0",
 ]

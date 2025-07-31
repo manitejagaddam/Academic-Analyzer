@@ -12,7 +12,7 @@ from agents.answers_extractor import answer_extractor
 
 team = RoundRobinGroupChat(
     participants=[answer_extractor(), answer_analyser()],
-    max_turns=2
+    max_turns=1
 )
 
 image_path = "Images/test1.png"
